@@ -11,7 +11,6 @@ import 'package:simple_permissions/simple_permissions.dart';
 
 // Files used by this package
 import 'audio_file_list_tile.dart';
-import 'shared_audio_context.dart';
 import 'save_dialog.dart';
 import 'package:path_provider/path_provider.dart';
 
@@ -40,7 +39,7 @@ class UmmLikeApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return new MaterialApp(
-      title: 'Simple Flutter Audio Recorder',
+      title: 'SimpleFlutterAudioRecorder',
       theme: new ThemeData(
         primarySwatch: Colors.blue,
       ),
@@ -96,7 +95,7 @@ class UmmLikeHomePageState extends State<UmmLikeHomePage>
         ));
 
 
-        return SharedAudioContext(scaffold);
+        return scaffold;
   }
 
   @override

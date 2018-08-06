@@ -10,8 +10,7 @@ dependencies:
   uuid: '>=1.0.0'
   path: '>=1.5.1'
   audioplayer: '>=0.5.0'
-  #fluttery_audio: '>=0.0.3'
-  #glob:
+
     
 
   # The following adds the Cupertino Icons font to your application.
