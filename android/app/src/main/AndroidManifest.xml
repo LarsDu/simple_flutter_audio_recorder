@@ -1,9 +1,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.simple_flutter_audio_recorder">
+    package="com.example.simpleflutteraudiorecorder">
     <!-- Add permissions for audio recording and storage -->
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
-
 
     <!-- The INTERNET permission is required for development. Specifically,
          flutter needs it to communicate with the running application
