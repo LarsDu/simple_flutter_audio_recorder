@@ -1,8 +1,10 @@
 # simple_flutter_audio_recorder
 
-A new Flutter project.
+A simple audio recorder made using Dart and Flutter
 
-## Getting Started
+Author: Lawrence Du
 
-For help getting started with Flutter, view our online
-[documentation](https://flutter.io/).
+
+To run this, install Flutter and Dart (https://flutter.io/get-started/install/)
+Connect your mobile device, and type `flutter run` while in the simple_flutter_audio_recorder directory.
+
