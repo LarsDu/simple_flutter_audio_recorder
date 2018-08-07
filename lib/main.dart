@@ -301,7 +301,7 @@ class AudioRecorderPageState extends State<AudioRecorderPage> {
                     // horizontal).
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
-                      Container(height:70.0),
+                      Spacer(flex:1),//70.0
                       Container( 
                         width: 120.0,
                         height: 120.0,
@@ -311,7 +311,7 @@ class AudioRecorderPageState extends State<AudioRecorderPage> {
                             valueColor: _isRecording ? AlwaysStoppedAnimation<Color>(Colors.blue):AlwaysStoppedAnimation<Color>(Colors.blueGrey[50]),
                             value: _isRecording ? null : 100.0,
                       )),
-                      Container(height:100.0),//spacer
+                      Spacer(),//spacer 10
                       _isRecording
                           ? new Text(
                               'Pause',
@@ -346,6 +346,7 @@ class AudioRecorderPageState extends State<AudioRecorderPage> {
                           ),
                         ],
                       ),
+                      Spacer(),
                     ],
                   ),
                 ),
@@ -353,6 +354,7 @@ class AudioRecorderPageState extends State<AudioRecorderPage> {
             }
     }
 }}
+
 
 class FileBrowserPage extends StatefulWidget {
   FileBrowserPage({Key key}) : super(key: key);

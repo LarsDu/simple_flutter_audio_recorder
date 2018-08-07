@@ -150,9 +150,9 @@ Widget build(BuildContext context){
         child: Center(
             child: Column(
               children: [
-                Container(height:70.0), //FIXME! Center these properly!
+                Spacer(flex:1),
                 Text(file.path.split('/').last.split('.').first),
-                Container(height: 30.0,), // spacer
+               //Spacer(),
                 position == null ?
                   Container() : Text(positionText)
                 ,
@@ -164,6 +164,7 @@ Widget build(BuildContext context){
                   max: duration.inMilliseconds.toDouble(),
                   onChanged: movedSlider,   
                 ),
+                Spacer(),
                 ButtonBar(
                     mainAxisSize: MainAxisSize.min,
                     alignment: MainAxisAlignment.center,
@@ -184,7 +185,8 @@ Widget build(BuildContext context){
                         mini: true,
                         onPressed: () => fastForward(),
                       ),
-                    ])
+                    ]),
+                    Spacer(),
               ],
             )));
   }
