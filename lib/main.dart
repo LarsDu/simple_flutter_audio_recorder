@@ -9,6 +9,7 @@ import 'package:uuid/uuid.dart';
 //import 'package:glob/glob.dart'; //BROKEN!
 import 'package:simple_permissions/simple_permissions.dart';
 
+
 // Files used by this package
 import 'audio_file_list_tile.dart';
 import 'save_dialog.dart';
@@ -65,9 +66,11 @@ class UmmLikeHomePageState extends State<UmmLikeHomePage>
   SnackBar errorSnackBar = new SnackBar(content: Text("Tapped button"));
   TabController _tabController;
 
+
   @override
   Widget build(BuildContext context) {
-    //
+    
+
     Scaffold scaffold = Scaffold(
         appBar: new AppBar(
             // Set AppBar title
@@ -115,7 +118,8 @@ class UmmLikeHomePageState extends State<UmmLikeHomePage>
   }
 
   void _onTabChange(){
-    //FIXME: Rebuild AudioRecorderPage here
+    //Stop any ongoing recording
+
   }
 
   requestPermissions() async {
@@ -129,6 +133,17 @@ class UmmLikeHomePageState extends State<UmmLikeHomePage>
   }
 }
 
+
+
+
+
+
+
+
+
+
+
+
 class AudioRecorderPage extends StatefulWidget {
   AudioRecorderPage({Key key}) : super(key: key);
 
@@ -141,16 +156,20 @@ class AudioRecorderPage extends StatefulWidget {
 class AudioRecorderPageState extends State<AudioRecorderPage> {
   // The AudioRecorderPageState holds info based on
   // whether the app is currently
+  // FIXME! Disable TabController when recording
+
   Recording _recording;
   bool _isRecording = false;
   bool _doQuerySave = false; //Activates save or delete buttons
 
+
+  // Note: The following variables are not state variables.
   String tempFilename = "TempRecording"; //Filename without path or extension
   File defaultAudioFile;
 
 
 
-  _stopRecording() async {
+  stopRecording() async {
     // Await return of Recording object
     var recording = await AudioRecorder.stop();
     bool isRecording = await AudioRecorder.isRecording;
@@ -171,7 +190,7 @@ class AudioRecorderPageState extends State<AudioRecorderPage> {
 
 
 
-  _startRecording() async {
+  startRecording() async {
     try {
       //final storage = SharedAudioContext.of(context).storage;
       //Directory docDir = await storage.docDir;
@@ -248,65 +267,90 @@ class AudioRecorderPageState extends State<AudioRecorderPage> {
         );
   }
   @override
-  Widget build(BuildContext context) {
 
-    return new Card(
-      child: new Center(
-        // Center is a layout widget. It takes a single child and positions it
-        // in the middle of the parent.
-        child: new Column(
-          // horizontal).
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Container(height:70.0),
-            Container( 
-              width: 120.0,
-              height: 120.0,
-              child:
-                 CircularProgressIndicator(
-                   strokeWidth: 14.0,
-                   value: _isRecording ? null : 0.0,
-            )),
-            Container(height:100.0),//spacer
-            _isRecording
-                ? new Text(
-                    'Pause',
-                    textScaleFactor: 1.5,
-                  )
-                : new Text('Record', textScaleFactor: 1.5),
-            ButtonBar(
-              alignment: MainAxisAlignment.center,
-              children: [
-                new FloatingActionButton(
-                  child: _doQuerySave ? new Icon(Icons.cancel) : null,
-                  backgroundColor:
-                      _doQuerySave ? Colors.blueAccent : Colors.transparent,
-                  onPressed: _doQuerySave ? (() => showDialog(
-                    context: context,
-                    builder: (context) => _deleteFileDialogBuilder(),
-                  )): null,
-                  mini: true,
-                ),
-                new FloatingActionButton(
-                  child: _isRecording
-                      ? new Icon(Icons.pause, size: 36.0)
-                      : new Icon(Icons.mic, size: 36.0),
-                  onPressed: _isRecording ? _stopRecording : _startRecording,
-                ),
-                new FloatingActionButton(
-                  child: _doQuerySave ? new Icon(Icons.check_circle) : null,
-                  backgroundColor:
-                      _doQuerySave ? Colors.blueAccent : Colors.transparent,
-                  mini: true,
-                  onPressed: _doQuerySave ? _showSaveDialog : null, 
-                ),
-              ],
-            ),
-          ],
-        ),
-      ),
-    );
+  //TODO: do an async check of audio recorder state before building everything else
+  Widget build(BuildContext context) {
+    // Check if the AudioRecorder is currently recording before building the rest of the Page
+    // If we do not check this,
+     return FutureBuilder<bool>(
+       future: AudioRecorder.isRecording,
+       builder: audioCardBuilder    
+     );
   }
+
+  Widget audioCardBuilder (BuildContext context, AsyncSnapshot snapshot ) {
+    switch (snapshot.connectionState) {
+          case ConnectionState.none:
+          case ConnectionState.waiting:
+            return Center(child:Text('Loading...',textScaleFactor: 2.0));
+          default:
+            if (snapshot.hasError){
+              return new Text('Error: ${snapshot.error}');
+            }else{
+              bool isRecording = snapshot.data;
+
+              // Note since this is being called in build(), we do not call set setState to change
+              // the value of _isRecording
+              _isRecording = isRecording;
+
+              return new Card(
+                child: new Center(
+                  // Center is a layout widget. It takes a single child and positions it
+                  // in the middle of the parent.
+                  child: new Column(
+                    // horizontal).
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      Container(height:70.0),
+                      Container( 
+                        width: 120.0,
+                        height: 120.0,
+                        child:
+                          CircularProgressIndicator(
+                            strokeWidth: 14.0,
+                            value: _isRecording ? null : 0.0,
+                      )),
+                      Container(height:100.0),//spacer
+                      _isRecording
+                          ? new Text(
+                              'Pause',
+                              textScaleFactor: 1.5,
+                            )
+                          : new Text('Record', textScaleFactor: 1.5),
+                      ButtonBar(
+                        alignment: MainAxisAlignment.center,
+                        children: [
+                          new FloatingActionButton(
+                            child: _doQuerySave ? new Icon(Icons.cancel) : null,
+                            backgroundColor:
+                                _doQuerySave ? Colors.blueAccent : Colors.transparent,
+                            onPressed: _doQuerySave ? (() => showDialog(
+                              context: context,
+                              builder: (context) => _deleteFileDialogBuilder(),
+                            )): null,
+                            mini: true,
+                          ),
+                          new FloatingActionButton(
+                            child: _isRecording
+                                ? new Icon(Icons.pause, size: 36.0)
+                                : new Icon(Icons.mic, size: 36.0),
+                            onPressed: _isRecording ? stopRecording : startRecording,
+                          ),
+                          new FloatingActionButton(
+                            child: _doQuerySave ? new Icon(Icons.check_circle) : null,
+                            backgroundColor:
+                                _doQuerySave ? Colors.blueAccent : Colors.transparent,
+                            mini: true,
+                            onPressed: _doQuerySave ? _showSaveDialog : null, 
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+              );
+            }
+    }
 }
 
 class FileBrowserPage extends StatefulWidget {
@@ -368,7 +412,7 @@ class FileBrowserState extends State<FileBrowserPage> {
         switch (snapshot.connectionState) {
           case ConnectionState.none:
           case ConnectionState.waiting:
-            return new Text('Loading...',textScaleFactor: 2.0);
+            return Center(child:Text('Loading...',textScaleFactor: 2.0));
           default:
             if (snapshot.hasError)
               return new Text('Error: ${snapshot.error}');
