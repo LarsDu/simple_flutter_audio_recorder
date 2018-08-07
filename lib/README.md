@@ -14,28 +14,28 @@ TODO:
 - [x] Rename file dialog
 - [x] Display filename in the play bar
 - [x] Autonumber default file names
-- [] Add ads
-- [] Open source on github
-- [] Fix the layout of the app
+- [ ] Add ads
+- [ ] Open source on github
+- [ ] Fix the layout of the app
 
 ML model:
-- [] Rename package and fork.
-- [] Set up ML model on Firebase
-- [] Get app to talk to Firebase
-- [] Build tensorflow transcription model.
-- [] Convert to tensorflow lite model.
-- [] Deploy online.
+- [ ] Rename package and fork.
+- [ ] Set up ML model on Firebase
+- [ ] Get app to talk to Firebase
+- [ ] Build tensorflow transcription model.
+- [ ] Convert to tensorflow lite model.
+- [ ] Deploy online.
 
 
 Bugs:
-- [] Renaming a file needs to propagate information to the listtile
+- [ ] Renaming a file needs to propagate information to the listtile
      (rebuild the listview on file deletion with a callback)
-- [] Need to stop recording/stop playing/reset state on switching tabs
+- [ ] Need to stop recording/stop playing/reset state on switching tabs
 
 
 Optional:
-- [] Display the date the file was created
-- [] Sort files by date
-- [] Make the slider operate properly
-- [] Add next file and previous file buttons
-- [] Fill negative space in the app
+- [ ] Display the date the file was created
+- [ ] Sort files by date
+- [ ] Make the slider operate properly
+- [ ] Add next file and previous file buttons
+- [ ] Fill negative space in the app
