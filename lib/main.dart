@@ -282,7 +282,7 @@ class AudioRecorderPageState extends State<AudioRecorderPage> {
     switch (snapshot.connectionState) {
           case ConnectionState.none:
           case ConnectionState.waiting:
-            return Center(child:Text('Loading...',textScaleFactor: 2.0));
+            return Container();
           default:
             if (snapshot.hasError){
               return new Text('Error: ${snapshot.error}');
@@ -308,7 +308,8 @@ class AudioRecorderPageState extends State<AudioRecorderPage> {
                         child:
                           CircularProgressIndicator(
                             strokeWidth: 14.0,
-                            value: _isRecording ? null : 0.0,
+                            valueColor: _isRecording ? AlwaysStoppedAnimation<Color>(Colors.blue):AlwaysStoppedAnimation<Color>(Colors.blueGrey[50]),
+                            value: _isRecording ? null : 100.0,
                       )),
                       Container(height:100.0),//spacer
                       _isRecording
@@ -351,7 +352,7 @@ class AudioRecorderPageState extends State<AudioRecorderPage> {
               );
             }
     }
-}
+}}
 
 class FileBrowserPage extends StatefulWidget {
   FileBrowserPage({Key key}) : super(key: key);
@@ -412,7 +413,7 @@ class FileBrowserState extends State<FileBrowserPage> {
         switch (snapshot.connectionState) {
           case ConnectionState.none:
           case ConnectionState.waiting:
-            return Center(child:Text('Loading...',textScaleFactor: 2.0));
+            return Container();
           default:
             if (snapshot.hasError)
               return new Text('Error: ${snapshot.error}');
