@@ -14,11 +14,13 @@ TODO:
 - [x] Rename file dialog
 - [x] Display filename in the play bar
 - [x] Autonumber default file names
-- [ ] Add ads
 - [ ] Open source on github
-- [ ] Fix the layout of the app
+- [ ] Add ads
+- [ ] Rearrage app visually
+- [ ] Display date and time in Audio player
 
-ML model:
+
+Speech recognition:
 - [ ] Rename package and fork.
 - [ ] Set up ML model on Firebase
 - [ ] Get app to talk to Firebase
@@ -28,7 +30,7 @@ ML model:
 
 
 Bugs:
-- [ ] Renaming a file needs to propagate information to the listtile
+- [x] Renaming a file needs to propagate information to the listtile
      (rebuild the listview on file deletion with a callback)
 - [ ] Need to stop recording/stop playing/reset state on switching tabs
 
@@ -36,6 +38,9 @@ Bugs:
 Optional:
 - [ ] Display the date the file was created
 - [ ] Sort files by date
+- [ ] Sort files by name
 - [ ] Make the slider operate properly
 - [ ] Add next file and previous file buttons
 - [ ] Fill negative space in the app
+- [ ] Make a more visually appealing
+- [ ] Get Tensorflow lite model running for simple speech recognition on device.

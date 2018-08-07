@@ -239,6 +239,14 @@ class AudioRecorderPageState extends State<AudioRecorderPage> {
   }
 
 
+  _showSaveDialog() {
+      // Note: SaveDialog should return a File or null when calling Navigator.pop()
+      // Catch this return value and update the state of the ListTile if the File has been renamed
+        showDialog(
+            context: context,
+            builder: (context) => SaveDialog(defaultAudioFile: defaultAudioFile,)
+        );
+  }
   @override
   Widget build(BuildContext context) {
 
@@ -286,10 +294,7 @@ class AudioRecorderPageState extends State<AudioRecorderPage> {
                   backgroundColor:
                       _doQuerySave ? Colors.blueAccent : Colors.transparent,
                   mini: true,
-                  onPressed: _doQuerySave ? (() => showDialog(
-                                context: context,
-                                builder: (context) =>
-                                    SaveDialog(defaultAudioFile: defaultAudioFile))) : null, 
+                  onPressed: _doQuerySave ? _showSaveDialog : null, 
                 ),
               ],
             ),

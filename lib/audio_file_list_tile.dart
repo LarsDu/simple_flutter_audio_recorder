@@ -6,10 +6,6 @@ import 'package:flutter/material.dart';
 import 'save_dialog.dart';
 import 'audio_play_bar.dart';
 
-
-// MOVE PLAYBAR TO SEPARATE CLASS TO REBUILD ON STATE CHANGE!!!
-//
-
 class AudioFileListTile extends StatefulWidget {
   final FileSystemEntity file;
   AudioFileListTile({Key key, this.file}) : super(key: key);
@@ -80,6 +76,28 @@ class AudioFileListTileState extends State<AudioFileListTile> {
         ]);
   }
 
+
+  _showSaveDialog() async {
+    
+      // Note: SaveDialog should return a File or null when calling Navigator.pop()
+      // Catch this return value and update the state of the ListTile if the File has been renamed
+      // Useful info on making Dialogs that update parents: https://stackoverflow.com/questions/49706046/
+        File newFile = await showDialog(
+            context: context,
+            builder: (context) => SaveDialog(defaultAudioFile: file,
+            dialogText: "Rename $fileName",
+            doLookupLargestIndex: false)
+        );
+
+        // Update the ListTile filename once the dialog is closed
+        setState((){
+          file=newFile;
+          initFileAttributes();
+        });
+
+  }
+
+
   Row createTrailingButtons() {
     // Note: https://stackoverflow.com/questions/44656013
     return Row(
@@ -105,12 +123,7 @@ class AudioFileListTileState extends State<AudioFileListTile> {
                       child: ListTile(
                         leading: Icon(Icons.redo),
                         title: Text('Rename'),
-                        onTap: (() => showDialog(
-                                context: context,
-                                builder: (context) =>
-                                    SaveDialog(defaultAudioFile: file, //FIXME!https://stackoverflow.com/questions/49706046/how-run-code-after-showdialog-is-dismissed-in-flutter
-                                    dialogText: "Rename $fileName?",
-                                    doLookupLargestIndex: false)))
+                        onTap: _showSaveDialog,
                       )),
 
                   PopupMenuDivider(), // ignore: list_element_type_not_assignable, https://github.com/flutter/flutter/issues/5771
