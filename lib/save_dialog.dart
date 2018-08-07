@@ -136,7 +136,6 @@ class SaveDialogState extends State<SaveDialog> {
         String filePath = entity.path;
         if (filePath.endsWith('.m4a') && !(filePath.startsWith('Temp'))) {
           String bname = p.basename(filePath);
-          print(bname);
           if (bname.startsWith(filenamePrefix)) {
             final String noExt = bname.split('.')[0];
             String strIndex = noExt.split(delimiter).last;

@@ -145,14 +145,14 @@ movedSlider(double value){
 }
 
 Widget build(BuildContext context){
-    return Center(
-        child: Padding(
-            padding: const EdgeInsets.all(20.0),
+    return Padding(
+        padding: const EdgeInsets.all(20.0),
+        child: Center(
             child: Column(
               children: [
-
+                Container(height:70.0), //FIXME! Center these properly!
                 Text(file.path.split('/').last.split('.').first),
-                Container(height: 10.0,), // spacer
+                Container(height: 30.0,), // spacer
                 position == null ?
                   Container() : Text(positionText)
                 ,

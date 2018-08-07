@@ -16,8 +16,7 @@ TODO:
 - [x] Autonumber default file names
 - [ ] Open source on github
 - [ ] Add ads
-- [ ] Rearrage app visually
-- [ ] Display date and time in Audio player
+- [x] Visually tune the app
 
 
 Speech recognition:

@@ -258,12 +258,16 @@ class AudioRecorderPageState extends State<AudioRecorderPage> {
           // horizontal).
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-
-            CircularProgressIndicator(
-              strokeWidth: 14.0,
-              value: _isRecording ? null : 0.0,
-            ),
-            Container(height:30.0),//spacer
+            Container(height:70.0),
+            Container( 
+              width: 120.0,
+              height: 120.0,
+              child:
+                 CircularProgressIndicator(
+                   strokeWidth: 14.0,
+                   value: _isRecording ? null : 0.0,
+            )),
+            Container(height:100.0),//spacer
             _isRecording
                 ? new Text(
                     'Pause',
@@ -329,8 +333,10 @@ class FileBrowserState extends State<FileBrowserPage> {
     //Filter out all m4a files
     // create ListTile for each file
     List<FileSystemEntity> dirFiles = docDir.listSync();
+  
+    // Glob audio files that are not the temp file.
     List<FileSystemEntity> m4aFiles =
-        dirFiles.where((file) => file.path.endsWith('.m4a')).toList();
+        dirFiles.where((file) => (file.path.endsWith('.m4a') && file.path.split('/').last != 'TempRecording.m4a' )).toList();
 
     //Glob has a bug!!!
     //final audioFilesGlob = new Glob(p.join(docDir,"*"));
