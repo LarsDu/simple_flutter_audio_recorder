@@ -154,8 +154,7 @@ Widget build(BuildContext context){
                 Text(file.path.split('/').last.split('.').first),
                //Spacer(),
                 position == null ?
-                  Container() : Text(positionText)
-                ,
+                  Container() : Text(positionText),
                 duration == null 
                 ?  Container() :
                    Slider(
@@ -164,7 +163,7 @@ Widget build(BuildContext context){
                   max: duration.inMilliseconds.toDouble(),
                   onChanged: movedSlider,   
                 ),
-                Spacer(),
+                Container(height:20.0),
                 ButtonBar(
                     mainAxisSize: MainAxisSize.min,
                     alignment: MainAxisAlignment.center,

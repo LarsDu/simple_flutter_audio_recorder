@@ -318,8 +318,9 @@ class AudioRecorderPageState extends State<AudioRecorderPage> {
                               textScaleFactor: 1.5,
                             )
                           : new Text('Record', textScaleFactor: 1.5),
-                      ButtonBar(
-                        alignment: MainAxisAlignment.center,
+                      Container(height:20.0),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           new FloatingActionButton(
                             child: _doQuerySave ? new Icon(Icons.cancel) : null,
@@ -331,12 +332,14 @@ class AudioRecorderPageState extends State<AudioRecorderPage> {
                             )): null,
                             mini: true,
                           ),
-                          new FloatingActionButton(
+                          Container(width: 30.0),
+                           new FloatingActionButton(
                             child: _isRecording
                                 ? new Icon(Icons.pause, size: 36.0)
                                 : new Icon(Icons.mic, size: 36.0),
                             onPressed: _isRecording ? stopRecording : startRecording,
                           ),
+                          Container(width: 30.0),
                           new FloatingActionButton(
                             child: _doQuerySave ? new Icon(Icons.check_circle) : null,
                             backgroundColor:
@@ -346,7 +349,7 @@ class AudioRecorderPageState extends State<AudioRecorderPage> {
                           ),
                         ],
                       ),
-                      Spacer(),
+                    Spacer(),
                     ],
                   ),
                 ),
