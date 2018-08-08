@@ -312,41 +312,51 @@ class AudioRecorderPageState extends State<AudioRecorderPage> {
                             value: _isRecording ? null : 100.0,
                       )),
                       Spacer(),//spacer 10
-                      _isRecording
-                          ? new Text(
-                              'Pause',
-                              textScaleFactor: 1.5,
-                            )
-                          : new Text('Record', textScaleFactor: 1.5),
-                      Container(height:20.0),
+                       Container(height:20.0),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          new FloatingActionButton(
-                            child: _doQuerySave ? new Icon(Icons.cancel) : null,
-                            backgroundColor:
-                                _doQuerySave ? Colors.blueAccent : Colors.transparent,
-                            onPressed: _doQuerySave ? (() => showDialog(
-                              context: context,
-                              builder: (context) => _deleteFileDialogBuilder(),
-                            )): null,
-                            mini: true,
+                          Column(
+                            children: [
+                               _doQuerySave ? Text("Delete",textScaleFactor: 1.2,) : Container(),
+                               Container(height:12.0),
+                              new FloatingActionButton(
+                                child: _doQuerySave ? new Icon(Icons.cancel) : null,
+                                backgroundColor:
+                                    _doQuerySave ? Colors.blueAccent : Colors.transparent,
+                                onPressed: _doQuerySave ? (() => showDialog(
+                                  context: context,
+                                  builder: (context) => _deleteFileDialogBuilder(),
+                                )): null,
+                                mini: true,
+                              ),
+                            ]
                           ),
-                          Container(width: 30.0),
+                          Container(width: 38.0),
+
+                          Column( children: [
+                            _isRecording
+                          ? new Text('Pause',textScaleFactor: 1.5)
+                          : new Text('Record', textScaleFactor: 1.5),
+                          Container(height:12.0),
                            new FloatingActionButton(
                             child: _isRecording
                                 ? new Icon(Icons.pause, size: 36.0)
                                 : new Icon(Icons.mic, size: 36.0),
                             onPressed: _isRecording ? stopRecording : startRecording,
-                          ),
-                          Container(width: 30.0),
-                          new FloatingActionButton(
-                            child: _doQuerySave ? new Icon(Icons.check_circle) : null,
-                            backgroundColor:
-                                _doQuerySave ? Colors.blueAccent : Colors.transparent,
-                            mini: true,
-                            onPressed: _doQuerySave ? _showSaveDialog : null, 
-                          ),
+                          ),]),
+                          Container(width: 38.0),
+                          Column(
+                            children:[
+                              _doQuerySave ? Text("Save",textScaleFactor: 1.2,) : Container(),
+                              Container(height:12.0),
+                              FloatingActionButton(
+                              child: _doQuerySave ? new Icon(Icons.check_circle) : Container(),
+                              backgroundColor:
+                                  _doQuerySave ? Colors.blueAccent : Colors.transparent,
+                              mini: true,
+                              onPressed: _doQuerySave ? _showSaveDialog : null, 
+                          ),]),
                         ],
                       ),
                     Spacer(),
