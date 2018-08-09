@@ -333,15 +333,14 @@ class AudioRecorderPageState extends State<AudioRecorderPage> {
                             ]
                           ),
                           Container(width: 38.0),
-
                           Column( children: [
                             _isRecording
-                          ? new Text('Pause',textScaleFactor: 1.5)
+                          ? new Text('Stop',textScaleFactor: 1.5)
                           : new Text('Record', textScaleFactor: 1.5),
                           Container(height:12.0),
                            new FloatingActionButton(
                             child: _isRecording
-                                ? new Icon(Icons.pause, size: 36.0)
+                                ? new Icon(Icons.stop, size: 36.0)
                                 : new Icon(Icons.mic, size: 36.0),
                             onPressed: _isRecording ? stopRecording : startRecording,
                           ),]),

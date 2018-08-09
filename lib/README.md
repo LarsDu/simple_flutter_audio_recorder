@@ -14,24 +14,20 @@ TODO:
 - [x] Rename file dialog
 - [x] Display filename in the play bar
 - [x] Autonumber default file names
-- [ ] Open source on github
-- [ ] Add ads
+- [x] Open source on github
 - [x] Visually tune the app
-
+- [x] Add ads and release on play store    
 
 Speech recognition:
-- [ ] Rename package and fork.
-- [ ] Set up ML model on Firebase
-- [ ] Get app to talk to Firebase
-- [ ] Build tensorflow transcription model.
-- [ ] Convert to tensorflow lite model.
-- [ ] Deploy online.
+- [ ] Add speech recognition module
+- [ ] Add speech recognition textController
 
 
 Bugs:
 - [x] Renaming a file needs to propagate information to the listtile
      (rebuild the listview on file deletion with a callback)
-- [ ] Need to stop recording/stop playing/reset state on switching tabs
+- [x] Need to stop recording/stop playing/reset state on switching tabs
+- [ ] Pause recording instead of stop recoding 
 
 
 Optional:
@@ -42,4 +38,6 @@ Optional:
 - [ ] Add next file and previous file buttons
 - [ ] Fill negative space in the app
 - [ ] Make a more visually appealing
-- [ ] Get Tensorflow lite model running for simple speech recognition on device.
+- [ ] Consider creating DeepSpeech REST api for custom cloud speech recognition 
+- [ ] Voice filters
+    
