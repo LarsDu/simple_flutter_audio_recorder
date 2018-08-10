@@ -112,36 +112,44 @@ class AudioPlayBarState extends State<AudioPlayBar>{
     });
   }
 
-  Future fastForward() async {
-    int dur = audioPlayer.duration.inSeconds.toInt();
-    print (dur);
-    audioPlayer.seek(dur.toDouble()*0.8);
-    setState( (){
-      playerState = PlayerState.playing;
-      duration = Duration(seconds: dur);
-  
-    });
-
+  Future fastForward() async {     
+    try{
+      int dur = audioPlayer.duration.inSeconds;
+      audioPlayer.seek(dur.toDouble()*0.8);
+      setState( (){
+       playerState = PlayerState.playing;
+       duration = Duration(seconds: dur.toInt());  
+      });
+    } catch(e){
+      print( "Error attempting to fast forward");
+    }
   }
 
   Future fastRewind() async {
-    int dur = audioPlayer.duration.inSeconds.toInt();
-    audioPlayer.seek(dur.toDouble()*0.2);
-    setState( (){
-      playerState = PlayerState.playing;
-      duration = Duration(seconds: dur);
-  
-    });
-
+    
+    try{
+      int dur = audioPlayer.duration.inSeconds;
+      audioPlayer.seek(dur.toDouble()*0.2);
+      setState( (){
+       playerState = PlayerState.playing;
+       duration = Duration(seconds: dur);  
+     });
+    }catch(e){
+      print( "Error attempting to fast rewind");
+    }
   }
 
 movedSlider(double value){
-  audioPlayer.seek((value/1000.0).roundToDouble()); 
-  //int dur = audioPlayer.duration.inSeconds.toInt();
-  //setState((){ 
-  //    duration = Duration(seconds: dur);
-  //  }
-  //);
+  try{
+    audioPlayer.seek( (value/1000.0).roundToDouble() ); 
+  }catch(e){
+    print("Error attempting to seek to time");
+  }
+  int dur = audioPlayer.duration.inSeconds.toInt();
+  setState((){ 
+      duration = Duration(seconds: dur);
+    }
+  );
 }
 
 Widget build(BuildContext context){
@@ -151,10 +159,17 @@ Widget build(BuildContext context){
             child: Column(
               children: [
                 Spacer(flex:1),
-                Text(file.path.split('/').last.split('.').first),
-               //Spacer(),
+                // Display the filename
+                Text(
+                  file.path.split('/').last.split('.').first, 
+                  style: TextStyle(fontWeight: FontWeight.bold),
+                  textScaleFactor: 1.5,
+                  ),
+                Container(height:12.0),
+                // Display the audio position (time)
                 position == null ?
-                  Container() : Text(positionText),
+                  Container() : Text(positionText,textScaleFactor: 1.2,),
+                // Display the slider
                 duration == null 
                 ?  Container() :
                    Slider(
@@ -164,26 +179,27 @@ Widget build(BuildContext context){
                   onChanged: movedSlider,   
                 ),
                 Container(height:20.0),
+                // Display the audio control buttons
                 ButtonBar(
                     mainAxisSize: MainAxisSize.min,
                     alignment: MainAxisAlignment.center,
                     children: <Widget>[
-                      new FloatingActionButton(
-                        child: new Icon(Icons.fast_rewind),
-                        onPressed: ()=>fastRewind(),
-                        mini: true,
-                      ),
+                      //new FloatingActionButton(
+                      //  child: new Icon(Icons.fast_rewind),
+                      //  onPressed: ()=>fastRewind(),
+                      //  mini: true,
+                      //),
                       new FloatingActionButton(
                         child: isPlaying
                             ? Icon(Icons.pause)
                             : Icon(Icons.play_arrow),
                         onPressed: isPlaying ? () => pause() : () => play(),
                       ),
-                      new FloatingActionButton(
-                        child: new Icon(Icons.fast_forward),
-                        mini: true,
-                        onPressed: () => fastForward(),
-                      ),
+                      //new FloatingActionButton(
+                      //  child: new Icon(Icons.fast_forward),
+                      // mini: true,
+                      //  onPressed: () => fastForward(),
+                      //),
                     ]),
                     Spacer(),
               ],
