@@ -6,7 +6,7 @@ This privacy policy describes how the SimpleFlutterAudioRecorder app (hereafter 
 All of the information that is collected on the APP will be handled in accordance with GDPR legislation.
 
 # Protection of Certain Personally-Identifying Information
-The APP does not collect personally-identifying infromation nor does it distribute this information to either the creator(s) of the APP or to third parties
+The APP does not collect personally-identifying information nor does it distribute this information to either the creator(s) of the APP or to third parties
 
 If you are a registered user of a website (which does not currently exist) associated with the APP and have supplied your email address, websites associated with the APP may occasionally send you an email to tell you about new features, solicit your feedback, or just keep you up to date with what’s going on with the APP and our products.
 
