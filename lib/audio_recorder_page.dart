@@ -44,8 +44,6 @@ class AudioRecorderPageState extends State<AudioRecorderPage> {
     //Directory docDir = await storage.docDir;
     Directory docDir = await getApplicationDocumentsDirectory();
 
-
-
     setState(() {
       //Tells flutter to rerun the build method
       _isRecording = isRecording;
@@ -134,7 +132,7 @@ class AudioRecorderPageState extends State<AudioRecorderPage> {
   }
   @override
 
-  //TODO: do an async check of audio recorder state before building everything else
+  // TODO: do an async check of audio recorder state before building everything else
   Widget build(BuildContext context) {
     // Check if the AudioRecorder is currently recording before building the rest of the Page
     // If we do not check this,
@@ -188,6 +186,7 @@ class AudioRecorderPageState extends State<AudioRecorderPage> {
                                Container(height:12.0),
                               new FloatingActionButton(
                                 child: _doQuerySave ? new Icon(Icons.cancel) : null,
+                                disabledElevation: 0.0,
                                 backgroundColor:
                                     _doQuerySave ? Colors.blueAccent : Colors.transparent,
                                 onPressed: _doQuerySave ? (() => showDialog(
@@ -208,6 +207,7 @@ class AudioRecorderPageState extends State<AudioRecorderPage> {
                             child: _isRecording
                                 ? new Icon(Icons.stop, size: 36.0)
                                 : new Icon(Icons.mic, size: 36.0),
+                            disabledElevation: 0.0,
                             onPressed: _isRecording ? stopRecording : startRecording,
                           ),]),
                           Container(width: 38.0),
@@ -219,6 +219,7 @@ class AudioRecorderPageState extends State<AudioRecorderPage> {
                               child: _doQuerySave ? new Icon(Icons.check_circle) : Container(),
                               backgroundColor:
                                   _doQuerySave ? Colors.blueAccent : Colors.transparent,
+                              disabledElevation:0.0,
                               mini: true,
                               onPressed: _doQuerySave ? _showSaveDialog : null, 
                           ),]),

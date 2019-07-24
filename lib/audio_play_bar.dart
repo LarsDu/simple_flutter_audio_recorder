@@ -1,6 +1,7 @@
 
 
 import 'dart:io';
+import 'dart:math';
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:audioplayer/audioplayer.dart';
@@ -78,6 +79,7 @@ class AudioPlayBarState extends State<AudioPlayBar>{
       }
     }, onError: (msg) {
       setState(() {
+        print(msg);
         playerState = PlayerState.stopped;
         duration = new Duration(seconds: 0);
         position = new Duration(seconds: 0);
@@ -139,17 +141,28 @@ class AudioPlayBarState extends State<AudioPlayBar>{
     }
   }
 
-movedSlider(double value){
+void movedSlider(double value){
+  // Update the slider image
+  //value is in milliseconds
+  if(value.toInt()%100 == 0){
+    setState((){    
+      position = new Duration(milliseconds: value.toInt() );
+   });
+  }
+}
+
+void finishedMovedSlider(double value){
+  value = max(0, value);
+  audioPlayer.pause();
   try{
     audioPlayer.seek( (value/1000.0).roundToDouble() ); 
   }catch(e){
     print("Error attempting to seek to time");
   }
-  int dur = audioPlayer.duration.inSeconds.toInt();
-  setState((){ 
-      duration = Duration(seconds: dur);
-    }
-  );
+  setState((){
+    position = new Duration(milliseconds: value.toInt());
+    playerState = PlayerState.paused;
+  }); 
 }
 
 Widget build(BuildContext context){
@@ -173,10 +186,12 @@ Widget build(BuildContext context){
                 duration == null 
                 ?  Container() :
                    Slider(
-                  value: position?.inMilliseconds?.toDouble() ?? 0.0 , 
+                  value: position?.inMilliseconds?.toDouble() ?? 0.01 , 
                   min: 0.0,
-                  max: duration.inMilliseconds.toDouble(),
-                  onChanged: movedSlider,   
+                  max: duration.inMilliseconds.toDouble()+10.0,
+                  divisions: 20,
+                  onChanged: movedSlider,
+                  onChangeEnd: finishedMovedSlider,   
                 ),
                 Container(height:20.0),
                 // Display the audio control buttons

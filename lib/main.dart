@@ -4,13 +4,19 @@ import 'package:flutter/material.dart';
 import 'package:simple_permissions/simple_permissions.dart';
 import 'file_recorder_page.dart';
 import 'audio_recorder_page.dart';
-
+import 'package:flutter/services.dart';
 
 
 
 // Run the app
-void main() => runApp(new UmmLikeApp());
-
+void main() {
+  //ref: https://medium.com/@kr1uz/how-to-restrict-device-orientation-in-flutter-65431cd35113
+  //runApp(new OminousApp());
+  SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp])
+   .then((_) {
+      runApp(new UmmLikeApp());
+  });
+}
 
 class _Page {
   const _Page({this.icon, this.text});
@@ -26,8 +32,6 @@ const List<_Page> _allPages = const <_Page>[
 
 
 class UmmLikeApp extends StatelessWidget {
-
-
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
@@ -57,7 +61,6 @@ class UmmLikeHomePageState extends State<UmmLikeHomePage>
     with SingleTickerProviderStateMixin {
   SnackBar errorSnackBar = new SnackBar(content: Text("Tapped button"));
   TabController _tabController;
-
 
   @override
   Widget build(BuildContext context) {
@@ -116,11 +119,11 @@ class UmmLikeHomePageState extends State<UmmLikeHomePage>
 
   requestPermissions() async {
     bool audioRes =
-        await SimplePermissions.requestPermission(Permission.RecordAudio);
+        await SimplePermissions.requestPermission(Permission.RecordAudio) == PermissionStatus.authorized;
     bool readRes = await SimplePermissions
-        .requestPermission(Permission.ReadExternalStorage);
+        .requestPermission(Permission.ReadExternalStorage) == PermissionStatus.authorized;
     bool writeRes = await SimplePermissions
-        .requestPermission(Permission.WriteExternalStorage);
+        .requestPermission(Permission.WriteExternalStorage) == PermissionStatus.authorized;
     return (audioRes && readRes && writeRes);
   }
 }

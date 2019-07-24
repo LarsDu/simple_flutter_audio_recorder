@@ -1,4 +1,4 @@
-package com.example.simpleflutteraudiorecorder;
+package com.blootie.simpleflutteraudiorecorder;
 
 import android.os.Bundle;
 import io.flutter.app.FlutterActivity;

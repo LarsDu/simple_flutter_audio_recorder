@@ -1,5 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.simpleflutteraudiorecorder">
+    package="com.blootie.simpleflutteraudiorecorder">
     <!-- Add permissions for audio recording and storage -->
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
