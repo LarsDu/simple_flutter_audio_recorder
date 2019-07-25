@@ -14,7 +14,7 @@ class SaveDialog extends StatefulWidget {
   final File defaultAudioFile;
   final String dialogText;
   final bool doLookupLargestIndex;
-
+  String newFilePath;
   SaveDialog({
     Key key,
     this.defaultAudioFile,
@@ -24,7 +24,10 @@ class SaveDialog extends StatefulWidget {
 
   @override
   SaveDialogState createState() {
-    return SaveDialogState(defaultAudioFile, dialogText, doLookupLargestIndex);
+    SaveDialogState sDialog = SaveDialogState(defaultAudioFile, dialogText, doLookupLargestIndex);
+    // Pass along the newFilePath obtained by SaveDialogState
+    newFilePath = sDialog.newFilePath;
+    return sDialog;
   }
 }
 
@@ -93,9 +96,8 @@ class SaveDialogState extends State<SaveDialog> {
     if (defaultAudioFile != null && newFilePath != null) {
       try {
         print("New file path $newFilePath");
-        defaultAudioFile.rename(newFilePath); //FIXME!!!!
-        //Reset the textController state
-        initTextController(false);
+        defaultAudioFile.rename(newFilePath); 
+        // Do not call initTextControllerState here!
       } catch (e) {
         if (await defaultAudioFile.exists()) {
           //FIXME: add file already exists warning
@@ -108,8 +110,8 @@ class SaveDialogState extends State<SaveDialog> {
       print("File $defaultAudioFile is null!");
     }
     // Close the save dialog and return a newFilePath which can be passed to
-    // the Widget that called showDialog()
-    Navigator.pop(context, File(newFilePath));
+    // the Widget that called showDialog() <Does this really work>?
+    Navigator.pop(context, File(newFilePath)); // what does this do?
   }
 
   Future<String> _largestNumberedFilename(
@@ -180,7 +182,7 @@ class SaveDialogState extends State<SaveDialog> {
           new FlatButton(
             child: const Text("SAVE"),
             onPressed: () =>
-                _renameAudioFile(), //FIXME (change default audio file name to specified name)
+                _renameAudioFile(), 
           ),
           new FlatButton(
             child: const Text("CANCEL"),

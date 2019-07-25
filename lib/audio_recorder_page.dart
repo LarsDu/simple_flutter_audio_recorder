@@ -122,14 +122,29 @@ class AudioRecorderPageState extends State<AudioRecorderPage> {
   }
 
 
-  _showSaveDialog() {
+  _showSaveDialog() async {
       // Note: SaveDialog should return a File or null when calling Navigator.pop()
       // Catch this return value and update the state of the ListTile if the File has been renamed
-        showDialog(
+      File newFile = await showDialog(
             context: context,
             builder: (context) => SaveDialog(defaultAudioFile: defaultAudioFile,)
-        );
+      );
+    
+    if( newFile != null){
+      String basename = p.basename(newFile.path);
+      Scaffold
+          .of(context)
+          .showSnackBar(new SnackBar(content: new Text("Saved file $basename"),
+                                     duration: Duration(milliseconds: 1400), ));
+
+      setState(() {
+        //Reset the page, and get rid of the buttons
+        _isRecording = false;
+        _doQuerySave = false;
+       });
+    }
   }
+
   @override
 
   // TODO: do an async check of audio recorder state before building everything else

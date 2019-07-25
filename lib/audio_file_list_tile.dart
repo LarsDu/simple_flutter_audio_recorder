@@ -1,7 +1,7 @@
 import 'dart:io';
 import 'dart:async';
 import 'package:flutter/material.dart';
-
+import 'dart:developer';
 
 import 'save_dialog.dart';
 import 'audio_play_bar.dart';
@@ -31,27 +31,13 @@ class AudioFileListTileState extends State<AudioFileListTile> {
 
   }
 
-
-
   initFileAttributes(){
     // Init some convenience variables
     this.filePath = file.path;
     this.fileName = this.filePath.split("/").last.split('.').first;
+    print("New "+fileName);
   }
 
-
-  renameFile(newFile){
-    // A callback for renaming the listtile
-
-    // Rebuild
-    //setState((){
-    //  file=newFile;
-
-    //});
-    //initFileAttributes();
-
-    print("Changed file to $this.file");
-  }
 
   _deleteFile(File file) {
     // Delete a file and rebuild this widget parent!
@@ -67,7 +53,9 @@ class AudioFileListTileState extends State<AudioFileListTile> {
         actions: <Widget>[
           new FlatButton(
             child: const Text("YES"),
-            onPressed: () => _deleteFile(this.file),
+            onPressed: () {
+              _deleteFile(this.file);
+            },
           ),
           new FlatButton(
             child: const Text("NO"),
@@ -77,24 +65,34 @@ class AudioFileListTileState extends State<AudioFileListTile> {
   }
 
 
+  _saveDialogBuilder(BuildContext context) {
+    SaveDialog sDialog = SaveDialog(
+      defaultAudioFile: file,
+      dialogText: "Rename $fileName",
+      doLookupLargestIndex: false);
+    return sDialog;
+
+  }
+
   _showSaveDialog() async {
     
       // Note: SaveDialog should return a File or null when calling Navigator.pop()
       // Catch this return value and update the state of the ListTile if the File has been renamed
       // Useful info on making Dialogs that update parents: https://stackoverflow.com/questions/49706046/
-        File newFile = await showDialog(
+        File newFile= await showDialog(
             context: context,
-            builder: (context) => SaveDialog(defaultAudioFile: file,
-            dialogText: "Rename $fileName",
-            doLookupLargestIndex: false)
-        );
+            builder: (context) => _saveDialogBuilder(context) //weird (context> => SaveDialog(..)
+              ); // note perhaps only showdialog should be asynced
 
+        // The return type is actually a File due to the navigator pop statement!
+        //debugger(message:"hello");
         // Update the ListTile filename once the dialog is closed
-        setState((){
-          file=newFile;
-          initFileAttributes();
-        });
 
+        setState((){
+           file=newFile;
+           initFileAttributes();
+        });
+        
   }
 
 
@@ -116,14 +114,18 @@ class AudioFileListTileState extends State<AudioFileListTile> {
         */
         PopupMenuButton<String>(
             padding: EdgeInsets.zero,
-            onSelected: (value) {},
+            onSelected: (value) {},   
             itemBuilder: (BuildContext context) => <PopupMenuEntry<String>>[
                   PopupMenuItem<String>(
                       value: 'Rename',
                       child: ListTile(
                         leading: Icon(Icons.redo),
                         title: Text('Rename'),
-                        onTap: _showSaveDialog,
+                        onTap: (){
+                          Navigator.pop(context); // closes PopMenu when finished?
+                          _showSaveDialog();
+                          setState((){});
+                        }
                       )),
 
                   PopupMenuDivider(), // ignore: list_element_type_not_assignable, https://github.com/flutter/flutter/issues/5771
@@ -138,6 +140,8 @@ class AudioFileListTileState extends State<AudioFileListTile> {
                             context: context,
                             builder: (_) => _openQueryDeleteDialog(),
                           );
+                          setState((){});
+
                         },
                       ))
                 ])
@@ -153,8 +157,9 @@ class AudioFileListTileState extends State<AudioFileListTile> {
 
   @override
   Widget build(BuildContext context) {
+    // Blank out the tile on deletion
     if (!file.existsSync()) {
-      return Container(width: 0.0, height: 0.0); //Rebuild parent instead?
+      return Container(width: 0.0, height: 0.0);
     }
     return new ListTile(
         title: new Text(fileName),
