@@ -1,9 +1,6 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 
-
-
-
 // Files used by this package
 import 'audio_file_list_tile.dart';
 import 'package:path_provider/path_provider.dart';
@@ -24,8 +21,6 @@ class FileBrowserPage extends StatefulWidget {
 class FileBrowserState extends State<FileBrowserPage> {
 
   FileBrowserState();
-
-
 
   ListView createFileListView(BuildContext context, AsyncSnapshot snapshot) {
     Directory docDir = snapshot.data;

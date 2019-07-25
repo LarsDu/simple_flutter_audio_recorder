@@ -1,8 +1,6 @@
 import 'dart:io';
 import 'dart:async';
 import 'package:flutter/material.dart';
-import 'dart:developer';
-
 import 'save_dialog.dart';
 import 'audio_play_bar.dart';
 
