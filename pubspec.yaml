@@ -1,6 +1,8 @@
 name: SimpleFlutterAudioRecorder
 description: A new Flutter project.
 
+version: 1.0.0+2
+
 dependencies:
   flutter:
     sdk: flutter
