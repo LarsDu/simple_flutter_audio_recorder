@@ -2,7 +2,7 @@ import 'dart:io';
 import 'dart:math';
 import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:audioplayer/audioplayer.dart';
+import 'package:audioplayers/audioplayers.dart';
 
 enum PlayerState { stopped, playing, paused }
 
@@ -29,7 +29,8 @@ class AudioPlayBarState extends State<AudioPlayBar>{
   PlayerState playerState = PlayerState.stopped;
   StreamSubscription _positionSubscription;
   StreamSubscription _audioPlayerStateSubscription;
-
+  StreamSubscription _audioPlayerCompletionSubscription;
+  StreamSubscription _audioPlayerDurationSubscription;
 
 
   get isPlaying => playerState == PlayerState.playing;
@@ -55,6 +56,8 @@ class AudioPlayBarState extends State<AudioPlayBar>{
   void dispose() {
     _positionSubscription.cancel();
     _audioPlayerStateSubscription.cancel();
+    _audioPlayerCompletionSubscription.cancel();
+    _audioPlayerDurationSubscription.cancel();
     audioPlayer.stop();
     super.dispose();
   }
@@ -63,16 +66,20 @@ class AudioPlayBarState extends State<AudioPlayBar>{
 
   void initAudioPlayer() {
     audioPlayer = new AudioPlayer();
+
     _positionSubscription = audioPlayer.onAudioPositionChanged
         .listen((p) => setState(() => position = p));
+
     _audioPlayerStateSubscription =
         audioPlayer.onPlayerStateChanged.listen((s) {
       if (s == AudioPlayerState.PLAYING) {
-        setState(() => duration = audioPlayer.duration);
+        setState((){
+          playerState = PlayerState.playing;
+        });
       } else if (s == AudioPlayerState.STOPPED) {
-        onComplete();
+
         setState(() {
-          position = duration;
+          playerState = PlayerState.stopped;
         });
       }
     }, onError: (msg) {
@@ -83,13 +90,17 @@ class AudioPlayBarState extends State<AudioPlayBar>{
         position = new Duration(seconds: 0);
       });
     });
+
+  _audioPlayerCompletionSubscription = audioPlayer.onPlayerCompletion
+    .listen((p) => setState( () => playerState = PlayerState.stopped));
+  
+    _audioPlayerDurationSubscription = audioPlayer.onDurationChanged.listen((Duration d){
+      setState( () => duration = d);
+    });
+   
+
   }
 
-  void onComplete() {
-    setState(
-      () => playerState = PlayerState.stopped
-    );
-  }
 
   Future play() async {
     await audioPlayer.play(file.path);
@@ -108,17 +119,15 @@ class AudioPlayBarState extends State<AudioPlayBar>{
     await audioPlayer.stop();
     setState(() {
       playerState = PlayerState.stopped;
-      position = new Duration();
     });
   }
 
   Future fastForward() async {     
-    try{
-      int dur = audioPlayer.duration.inSeconds;
-      audioPlayer.seek(dur.toDouble()*0.8);
+    try{     
+      Duration newDur = duration*.8;
+      audioPlayer.seek(newDur);
       setState( (){
        playerState = PlayerState.playing;
-       duration = Duration(seconds: dur.toInt());  
       });
     } catch(e){
       print( "Error attempting to fast forward");
@@ -128,11 +137,10 @@ class AudioPlayBarState extends State<AudioPlayBar>{
   Future fastRewind() async {
     
     try{
-      int dur = audioPlayer.duration.inSeconds;
-      audioPlayer.seek(dur.toDouble()*0.2);
+      Duration newDur = duration*.2;
+      audioPlayer.seek(newDur);
       setState( (){
        playerState = PlayerState.playing;
-       duration = Duration(seconds: dur);  
      });
     }catch(e){
       print( "Error attempting to fast rewind");
@@ -152,13 +160,13 @@ void movedSlider(double value){
 void finishedMovedSlider(double value){
   value = max(0, value);
   audioPlayer.pause();
+  position = new Duration(milliseconds: value.toInt());
   try{
-    audioPlayer.seek( (value/1000.0).roundToDouble() ); 
+    audioPlayer.seek(position); 
   }catch(e){
     print("Error attempting to seek to time");
   }
   setState((){
-    position = new Duration(milliseconds: value.toInt());
     playerState = PlayerState.paused;
   }); 
 }
@@ -179,7 +187,7 @@ Widget build(BuildContext context){
                 Container(height:12.0),
                 // Display the audio position (time)
                 position == null ?
-                  Container() : Text(positionText,textScaleFactor: 1.2,),
+                  Container() : Text("$positionText / $durationText",textScaleFactor: 1.2,),
                 // Display the slider
                 duration == null 
                 ?  Container() :

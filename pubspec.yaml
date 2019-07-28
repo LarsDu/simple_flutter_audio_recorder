@@ -11,7 +11,7 @@ dependencies:
   simple_permissions: '>=0.1.5'
   uuid: '>=1.0.0'
   path: '>=1.5.1'
-  audioplayer: '>=0.5.0'
+  audioplayers: '>=0.13.1'
   #speech_recognition: '^0.2.0'
     
 
