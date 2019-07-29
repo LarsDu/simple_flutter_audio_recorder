@@ -97,7 +97,9 @@ class AudioPlayBarState extends State<AudioPlayBar>{
     _audioPlayerDurationSubscription = audioPlayer.onDurationChanged.listen((Duration d){
       setState( () => duration = d);
     });
-   
+
+    print(duration);
+    print(position);
 
   }
 
@@ -110,12 +112,13 @@ class AudioPlayBarState extends State<AudioPlayBar>{
   }
 
   Future pause() async {
-    print ("Pressed pause");
+    print("Pressed pause");
     await audioPlayer.pause();
     setState(() => playerState = PlayerState.paused);
   }
 
   Future stop() async {
+    print("Pressed stop");
     await audioPlayer.stop();
     setState(() {
       playerState = PlayerState.stopped;
@@ -187,15 +190,15 @@ Widget build(BuildContext context){
                 Container(height:12.0),
                 // Display the audio position (time)
                 position == null ?
-                  Container() : Text("$positionText / $durationText",textScaleFactor: 1.2,),
+                Text("Error!") : Text("$positionText / $durationText",textScaleFactor: 1.2,),
                 // Display the slider
                 duration == null 
-                ?  Container() :
+                ?  Text("Duration Error!") :
                    Slider(
                   value: position?.inMilliseconds?.toDouble() ?? 0.01 , 
                   min: 0.0,
-                  max: duration.inMilliseconds.toDouble()+10.0,
-                  divisions: 20,
+                  max: duration.inMilliseconds.toDouble(),
+                  divisions: 40,
                   onChanged: movedSlider,
                   onChangeEnd: finishedMovedSlider,   
                 ),

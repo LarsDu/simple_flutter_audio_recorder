@@ -1,0 +1,9 @@
+// This is a generated file; do not edit or check into version control.
+FLUTTER_ROOT=/Users/ladu/builds/flutter
+FLUTTER_APPLICATION_PATH=/Users/ladu/Documents/Code/simple_flutter_audio_recorder
+FLUTTER_TARGET=/Users/ladu/Documents/Code/simple_flutter_audio_recorder/lib/main.dart
+FLUTTER_BUILD_DIR=build
+SYMROOT=${SOURCE_ROOT}/../build/ios
+FLUTTER_FRAMEWORK_DIR=/Users/ladu/builds/flutter/bin/cache/artifacts/engine/ios
+FLUTTER_BUILD_NAME=1.0.0
+FLUTTER_BUILD_NUMBER=2

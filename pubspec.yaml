@@ -6,12 +6,12 @@ version: 1.0.0+2
 dependencies:
   flutter:
     sdk: flutter
-  audio_recorder: '>=0.0.2'
+  audio_recorder: '^1.0.1'
   path_provider: '>=0.4.1'
-  simple_permissions: '>=0.1.5'
+  simple_permissions: '^0.1.5'
   uuid: '>=1.0.0'
   path: '>=1.5.1'
-  audioplayers: '>=0.13.1'
+  audioplayers: '^0.13.1'
   #speech_recognition: '^0.2.0'
     
 
