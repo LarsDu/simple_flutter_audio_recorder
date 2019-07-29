@@ -77,13 +77,13 @@ class AudioPlayBarState extends State<AudioPlayBar>{
           playerState = PlayerState.playing;
         });
       } else if (s == AudioPlayerState.STOPPED) {
-
         setState(() {
           playerState = PlayerState.stopped;
         });
       }
     }, onError: (msg) {
       setState(() {
+        print("Error in subscription to audioPlayerState");
         print(msg);
         playerState = PlayerState.stopped;
         duration = new Duration(seconds: 0);
@@ -97,18 +97,20 @@ class AudioPlayBarState extends State<AudioPlayBar>{
     _audioPlayerDurationSubscription = audioPlayer.onDurationChanged.listen((Duration d){
       setState( () => duration = d);
     });
-
-    print(duration);
-    print(position);
-
+    audioPlayer.state = AudioPlayerState.STOPPED;
   }
 
 
   Future play() async {
-    await audioPlayer.play(file.path);
-    setState(() {
-      playerState = PlayerState.playing;
-    });
+    final playPosition = (position != null &&
+            duration != null &&
+            position.inMilliseconds > 0 &&
+            position.inMilliseconds < duration.inMilliseconds)
+        ? position
+        : null;
+    final result =
+        await audioPlayer.play(file.path, isLocal: true, position: playPosition);
+    if (result == 1) setState(() => playerState = PlayerState.playing);
   }
 
   Future pause() async {
@@ -190,10 +192,10 @@ Widget build(BuildContext context){
                 Container(height:12.0),
                 // Display the audio position (time)
                 position == null ?
-                Text("Error!") : Text("$positionText / $durationText",textScaleFactor: 1.2,),
+                Text("0:00:00/0:00:00") : Text("$positionText / $durationText",textScaleFactor: 1.2,),
                 // Display the slider
                 duration == null 
-                ?  Text("Duration Error!") :
+                ? Container() :
                    Slider(
                   value: position?.inMilliseconds?.toDouble() ?? 0.01 , 
                   min: 0.0,
